@@ -11,5 +11,7 @@ RUN wget -O miniconda.sh http://repo.continuum.io/miniconda/Miniconda3-4.7.12.1-
 # Presumes aceptance of the license
 RUN bash miniconda.sh -b
 ENV PATH="/root/miniconda3/bin:${PATH}"
-RUN conda install zarr
+RUN conda install \
+    zarr \
+    ipython
 RUN conda install -c bioconda plink
