@@ -43,7 +43,6 @@ def encode_alleles(a1: str, a2: str, code: List[str]) -> int:
 def conv_chrom(fname: str, num_samples: int,
                root: Group, chrom: int) -> None:
     tfam = open(fname)  # We need to open each time, so that seeks are different for parallel executions
-    print(chrom)
     chrom_group = root.create_group(f'chromosome-{chrom}')
 
     positions = []
@@ -59,6 +58,8 @@ def conv_chrom(fname: str, num_samples: int,
     all_calls = chrom_group.zeros('calls', shape=(len(positions), num_samples), dtype='u8')  # chunks?
     place_stream_start(tfam, chrom)
     for count, line in enumerate(tfam):
+        if count == len(positions):
+            break
         tokens = line.rstrip().split(' ')
         calls = tokens[4:]
         alleles = list(set(calls[4:]) - set([0]))
@@ -67,9 +68,9 @@ def conv_chrom(fname: str, num_samples: int,
             try:
                 all_calls[count, sample_position] = encode_alleles(a1, a2, alleles)
             except:
-                print(count, sample_position, num_samples, len(positions))
-                asdsadsad
-        if count % 10000 == 0:
+                print(chrom, count, sample_position, num_samples, len(positions))
+                raise
+        if count % 100000 == 0:
             print(chrom, count)
 
 
@@ -85,7 +86,7 @@ my_promises = {}
 #Say that we will revist threadpool/performance on concurrency chapter
 with ProcessPoolExecutor(max_workers=NUM_WORKERS) as executor:
     results = executor.map(conv_chrom_in_db,
-                           [chrom for chrom in range(8, 23)])
+                           [chrom for chrom in range(1, 23)])
     list(results)
 
 #root.close()
