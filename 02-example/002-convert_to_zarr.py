@@ -8,14 +8,7 @@ import numpy as np
 import zarr
 from zarr.hierarchy import Group
 
-# XXX This could be done with queues?
-
-PLINK_PREF = 'my_hapmap'
-ZARR_DB = 'db.zarr'
-NUM_WORKERS = os.cpu_count()
-NUM_WORKERS = 4
-# XXX set as number of cores?
-# XXX consider set affinity
+from constants import *
 
 
 def get_samples(pref: str) -> List[str]:
@@ -47,32 +40,6 @@ def encode_alleles(a1: str, a2: str, code: List[str]) -> int:
     return 2
 
 
-def conv_chrom_slow(tfam: IO[str], num_samples: int,
-               root: Group, chrom: int) -> None:
-    chrom_group = root.create_group(f'chromosome-{chrom}')
-    place_stream_start(tfam, chrom)
-    positions = []
-    all_calls = chrom_group.array('calls', [], dtype='u8')
-    for line in tfam:
-        tokens = line.rstrip().split(' ')
-        line_chrom = int(tokens[0])
-        if chrom != line_chrom:
-            break
-        positions.append(int(tokens[3]))
-        calls = tokens[4:]
-        alleles = list(set(calls[4:]) - set([0]))
-        variant_calls = []
-        for sample in range(num_samples):
-            a1, a2 = calls[2 * sample: 2 * sample + 2]
-            variant_calls.append(encode_alleles(a1, a2, alleles))
-        all_calls.append(np.array(variant_calls))
-        if len(positions) > 2000:
-            print(positions[-1])
-            break
-    #all_calls.reshape
-    chrom_group.array('positions', positions)
-
-
 def conv_chrom(fname: str, num_samples: int,
                root: Group, chrom: int) -> None:
     tfam = open(fname)  # We need to open each time, so that seeks are different for parallel executions
@@ -89,7 +56,7 @@ def conv_chrom(fname: str, num_samples: int,
         positions.append(int(tokens[3]))
     chrom_group.array('positions', positions)
 
-    all_calls = chrom_group.zeros('calls', shape=(len(positions), num_samples), dtype='u8')
+    all_calls = chrom_group.zeros('calls', shape=(len(positions), num_samples), dtype='u8')  # chunks?
     place_stream_start(tfam, chrom)
     for count, line in enumerate(tfam):
         tokens = line.rstrip().split(' ')
@@ -97,12 +64,13 @@ def conv_chrom(fname: str, num_samples: int,
         alleles = list(set(calls[4:]) - set([0]))
         for sample_position, sample in enumerate(range(num_samples)):
             a1, a2 = calls[2 * sample: 2 * sample + 2]
-            all_calls[count, sample_position] = encode_alleles(a1, a2, alleles)
+            try:
+                all_calls[count, sample_position] = encode_alleles(a1, a2, alleles)
+            except:
+                print(count, sample_position, num_samples, len(positions))
+                asdsadsad
         if count % 10000 == 0:
             print(chrom, count)
-        if count % 50000 == 49999:
-            break
-    #all_calls.reshape
 
 
 root = zarr.open(ZARR_DB, mode='w')
@@ -114,47 +82,13 @@ num_samples = samples.size
 conv_chrom_in_db = partial(conv_chrom, f'{PLINK_PREF}.tped', num_samples, root)
 my_promises = {}
 #a = conv_chrom_in_db(open(f'{PLINK_PREF}.tped'), chrom=1)
-#We should consider a threadpoolexecutor
+#Say that we will revist threadpool/performance on concurrency chapter
 with ProcessPoolExecutor(max_workers=NUM_WORKERS) as executor:
     results = executor.map(conv_chrom_in_db,
-                           [chrom for chrom in range(1, 23)])
+                           [chrom for chrom in range(8, 23)])
     list(results)
 
 #root.close()
 
 # Note: open of tped has to occur 22 times to avoid stream confusion
-
-#snakeviz
-#pyflame
-
-
-# create and then recompress?
-
-
-# Times (2 chroms, upto 100_000 positions):
-#
-# Single thread 2.55, 2.30, 0.25
-# Dual thread 2.22, 3.11, 0.41
-# Dual proc 1.64 3.08, 0.32
-
-# 22 chroms, up to 50_000
-# Single thread 31.55 29.19 2.25
-# 2 thread      29.37 34.2 4.43
-# 2 proc        22.33 39.28 3.32
-# 8 thread      32.05 43.29 8.45
-# 8 proc        15.12 95.34 7.42
-
-# Linux time is really good (extra info)
-
-# Profile slow version
-
-# Profile multithreaded/multiprocess version to find the cullprit
-
-
-# Paralelizzable because CPU bound (zarr) -  re-assess in the Zarr chapter
-
-# print tree and compression rate of a chrom
-
-# try with no zarr compression
-
 # do read with asyncio?
