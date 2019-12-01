@@ -8,13 +8,13 @@ import numpy as np
 import zarr
 from zarr.hierarchy import Group
 
-from constants import *
+from utilities import NUM_WORKERS, PLINK_PREF, ZARR_DB
 
 
 def get_samples(pref: str) -> List[str]:
     with open(f'{pref}.tfam') as tfam:
-        return map(lambda line: line.split(' ')[1],
-                   tfam.readlines())
+        return list(map(lambda line: line.split(' ')[1],
+                        tfam.readlines()))
 
 
 def place_stream_start(stream: IO[str], chrom: int) -> None:
@@ -55,7 +55,7 @@ def conv_chrom(fname: str, num_samples: int,
         positions.append(int(tokens[3]))
     chrom_group.array('positions', positions)
 
-    all_calls = chrom_group.zeros('calls', shape=(len(positions), num_samples), dtype='u8')  # chunks?
+    all_calls = chrom_group.zeros('calls', shape=(len(positions), num_samples), dtype='B') #, compressor='none')  # chunk this??? # comment on dtype
     place_stream_start(tfam, chrom)
     for count, line in enumerate(tfam):
         if count == len(positions):
@@ -63,14 +63,16 @@ def conv_chrom(fname: str, num_samples: int,
         tokens = line.rstrip().split(' ')
         calls = tokens[4:]
         alleles = list(set(calls[4:]) - set([0]))
+        sample_calls = np.empty(shape=num_samples, dtype='B')
         for sample_position, sample in enumerate(range(num_samples)):
             a1, a2 = calls[2 * sample: 2 * sample + 2]
             try:
-                all_calls[count, sample_position] = encode_alleles(a1, a2, alleles)
+                sample_calls[sample_position] = encode_alleles(a1, a2, alleles)
             except:
                 print(chrom, count, sample_position, num_samples, len(positions))
                 raise
-        if count % 100000 == 0:
+        all_calls[count, :] = sample_calls
+        if count % 1000 == 0:
             print(chrom, count)
 
 
