@@ -12,6 +12,10 @@ RUN wget -O miniconda.sh http://repo.continuum.io/miniconda/Miniconda3-4.7.12.1-
 RUN bash miniconda.sh -b
 ENV PATH="/root/miniconda3/bin:${PATH}"
 RUN conda install \
-    zarr \
-    ipython
+    ipython \
+    line_profiler \
+    psutil \
+    pympler \
+    snakeviz \
+    zarr 
 RUN conda install -c bioconda plink
