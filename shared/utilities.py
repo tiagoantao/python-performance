@@ -8,7 +8,8 @@ from zarr.hierarchy import Array
 PLINK_PREF = 'my_hapmap'
 ZARR_DB = 'db.zarr'
 NUM_WORKERS = os.cpu_count()  # Is this cores, processors or threads?
-#NUM_WORKERS = 1
+NUM_SAMPLES = 210
+
 
 
 def get_population_map(pop_file: str) -> Dict[str, Dict[str, str]]:
