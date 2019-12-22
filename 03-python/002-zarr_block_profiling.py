@@ -14,8 +14,6 @@ from zarr import blosc
 from utilities import NUM_SAMPLES, PLINK_PREF, ZARR_DB
 from ch2 import conv_chrom, encode_alleles
 
-MAX_POSITIONS = 200000
-
 blosc.set_nthreads(1)
 proc = psutil.Process()
 

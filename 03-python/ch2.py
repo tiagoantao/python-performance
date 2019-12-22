@@ -1,7 +1,7 @@
 from functools import lru_cache
 import sys
 sys.path.insert(0, '../shared')
-from typing import Callable, List, IO, Set
+from typing import Callable, List, IO, Option, Set
 
 import numpy as np
 from zarr import Group
@@ -38,7 +38,7 @@ if 'profile' not in __builtins__:
 
 
 @profile
-def conv_chrom(fname: str, block_size: int, max_positions: int,
+def conv_chrom(fname: str, block_size: int, max_positions: Option[int],
                root: Group, chrom: int,
                encode_alleles: Callable = encode_alleles,
                encode_fun: Callable = list) -> None:
@@ -64,5 +64,5 @@ def conv_chrom(fname: str, block_size: int, max_positions: int,
         if count % block_size == block_size - 1:
             all_calls[current_position:current_position+block_size, :] = block
             block = []
-        if count % max_positions == max_positions - 1:
+        if max_positions is not None and count % max_positions == max_positions - 1:
             break
