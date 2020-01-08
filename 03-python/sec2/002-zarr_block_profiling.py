@@ -11,7 +11,7 @@ import zarr
 from zarr.hierarchy import Group
 from zarr import blosc
 
-from utilities import NUM_SAMPLES, PLINK_PREF, ZARR_DB
+from utilities import MAX_POSITIONS, NUM_SAMPLES, PLINK_PREF, ZARR_DB
 from ch2 import conv_chrom, encode_alleles
 
 blosc.set_nthreads(1)

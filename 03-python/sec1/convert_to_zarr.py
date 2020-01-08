@@ -6,7 +6,7 @@ from zarr import blosc
 sys.path.insert(0, '../shared')
 
 from utilities import PLINK_PREF
-from ch2 import conv_chrom
+from ch3 import conv_chrom
 
 MAX_POSITIONS = 100000
 BLOCK_SIZE = int(sys.argv[1])
