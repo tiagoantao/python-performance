@@ -12,8 +12,10 @@ MAX_POSITIONS = 100000
 BLOCK_SIZE = int(sys.argv[1])
 
 blosc.set_nthreads(1)
-root = zarr.open('ignore.zarr', mode='w')
-conv_chrom(f'{PLINK_PREF}.tped', BLOCK_SIZE, MAX_POSITIONS, root, 1)
+root = zarr.open('db.zarr', mode='w')
+for chrom in range(1, 23):
+    print(f'Currently doing chromosome {chrom}')
+    conv_chrom(f'{PLINK_PREF}.tped', BLOCK_SIZE, root, chrom)
 
 #memory size
 # number of runs - we are doing only 1

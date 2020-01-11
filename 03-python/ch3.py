@@ -1,12 +1,11 @@
-from functools import lru_cache
 import sys
-sys.path.insert(0, '../shared')
-from typing import Callable, List, IO, Optional, Set
 
 import numpy as np
 from zarr import Group
 
-from utilities import NUM_SAMPLES
+sys.path.insert(0, '../shared')
+
+from utilities import NUM_SAMPLES  # noqa: E402
 
 
 def encode_alleles(a1: str, a2: str, code: str) -> int:
@@ -27,17 +26,27 @@ if 'profile' not in __builtins__:
 
 
 @profile
-def conv_chrom(fname: str, block_size: int, max_positions: Optional[int],
+def conv_chrom(fname: str, block_size: int,
                root: Group, chrom: int) -> None:
+    num_positions = 0
+    with open(fname) as tfam:
+        for line in tfam:  # redo this with generators
+            tokens = line.rstrip().split(' ')
+            l_chrom = int(tokens[0])
+            if l_chrom < chrom:
+                continue
+            elif l_chrom > chrom:
+                break
+            num_positions += 1
     tfam = open(fname)
     chrom_group = root.create_group(f'chromosome-{chrom}')
-
-    all_calls = chrom_group.zeros('calls', shape=(max_positions, NUM_SAMPLES), dtype='B')
+    all_calls = chrom_group.zeros('calls', shape=(num_positions, NUM_SAMPLES),
+                                  dtype='B')
     block = []
     all_positions = []
     all_alleles = []
     current_position = 0
-    for count, line in enumerate(tfam):
+    for line in tfam:  # redo this with generators
         tokens = line.rstrip().split(' ')
         l_chrom = int(tokens[0])
         if l_chrom < chrom:
@@ -57,13 +66,14 @@ def conv_chrom(fname: str, block_size: int, max_positions: Optional[int],
             try:
                 sample_calls[sample_position] = encode_alleles(a1, a2, alleles)
             except Exception:
-                print(chrom, count, sample_position)
+                print(chrom, current_position, sample_position)
                 raise
         block.append(sample_calls)
-        if count % block_size == block_size - 1:
-            all_calls[current_position:current_position+block_size, :] = block
+        current_position += 1
+        if current_position % block_size == 0:
+            all_calls[current_position - block_size:current_position, :] = block
             block = []
-        if max_positions is not None and count % max_positions == max_positions - 1:
-            break
+    if len(block) > 0:
+        all_calls[- len(block):, :] = block
     chrom_group.array('positions', all_positions)
     chrom_group.array('alleles', all_alleles)
