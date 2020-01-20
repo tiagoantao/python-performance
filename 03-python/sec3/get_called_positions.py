@@ -30,11 +30,11 @@ min_position = min(positions)
 max_position = max(positions)
 middle_location = (max_position + min_position) // 2
 
-print(timeit('in_unordered(positions, my_max // 2)', number=10,
+print(timeit('in_unordered(positions, middle_location)', number=10,
              globals=locals()) / 10)
-print(timeit('in_ordered(positions, my_max // 2)', number=1000,
+print(timeit('in_ordered(positions, middle_location)', number=1000,
              globals=locals()) / 1000)
-print(timeit('in_set(positions_set, my_max // 2)', number=10000,
+print(timeit('in_set(positions_set, middle_location)', number=10000,
              globals=locals()) / 10000)
 
 
