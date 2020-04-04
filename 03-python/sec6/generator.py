@@ -35,6 +35,7 @@ def get_chrom_g(my_chrom: int):
 
 calls_g = get_chrom_g(1)
 
+print(sys.getsizeof(calls), type(calls))
 print(sys.getsizeof(calls_g), type(calls_g))
 
 print(set(next(calls_g)))
