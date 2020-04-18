@@ -23,5 +23,5 @@ def counter(emitted):
 
 a = list(map_reduce_still_naive(words, emiter, counter))
 
-#for i in sorted(a, key=lambda x: x[1]):
-#    print(i)
+for i in sorted(a, key=lambda x: x[1]):
+    print(i)
