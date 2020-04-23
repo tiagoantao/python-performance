@@ -12,10 +12,12 @@ def report_progress(futures, tag, callback):
         for fut in futures:
             if fut.done():
                 done +=1
+                print(fut)
+                print(fut.exception())
             else:
                 not_done += 1
         sleep(0.5)
-        if callback:
+        if not_done > 0 and callback:
             callback(tag, done, not_done)
     
 
@@ -43,17 +45,17 @@ def map_reduce_less_naive(my_input, mapper, reducer, callback=None):
 
         futures = async_map(executor, reducer, distributor.items())
         report_progress(futures, 'reduce', callback)
+        #wait(futures).done
         results = map(lambda f: f.result(), futures)
     return results
 
 
 def emitter(word):
+    #sleep(10)
     return word, 1
 
 
-def counter(emitted):
-    return emitted[0], sum(emitted[1])
-
+counter = lambda emitted: (emitted[0], sum(emitted[1]))
 
 def reporter(tag, done, not_done):
     print(f'Operation {tag}: {done}/{done+not_done}')
