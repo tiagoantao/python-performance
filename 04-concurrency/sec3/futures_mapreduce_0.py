@@ -3,36 +3,6 @@ from concurrent.futures import ProcessPoolExecutor as Executor
 from time import sleep
 
 
-def report_progress(futures, tag, callback):
-    not_done = 1
-    done = 0
-    while not_done > 0:
-        not_done = 0
-        done = 0
-        for fut in futures:
-            if fut.done():
-                done +=1
-                print(fut)
-                print(fut.exception())
-            else:
-                not_done += 1
-        sleep(0.5)
-        if not_done > 0 and callback:
-            callback(tag, done, not_done)
-    
-
-def async_map(executor, mapper, data):
-    futures = []
-    for datum in data:
-        futures.append(executor.submit(mapper, datum))
-    return futures
-
-
-def map_less_naive(executor, my_input, mapper):
-    map_results = async_map(executor, mapper, my_input)
-    return map_results
-
-
 def map_reduce_less_naive(my_input, mapper, reducer, callback=None):
     with Executor(max_workers=2) as executor:
         futures = async_map(executor, mapper, my_input)
