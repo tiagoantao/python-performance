@@ -34,6 +34,6 @@ print(sys.getsizeof('A'))
 
 all_ids = set()
 for SNP in calls:
-    for obj in entry:
+    for obj in SNP:
         all_ids.add(id(obj))
 print(len(all_ids))
