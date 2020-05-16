@@ -51,7 +51,10 @@ def reporter(tag, done, not_done):
 
 words = 'Python is great Python rocks'.split(' ')
 pool = mp.Pool(2)
-a = map_reduce(pool, words, emitter, counter, reporter)
+results = map_reduce(pool, words, emitter, counter, reporter)
+pool.close()
+pool.join()
 
-for i in sorted(a, key=lambda x: x[1]):
-    print(i)
+
+for result in sorted(results, key=lambda x: x[1]):
+    print(result)
