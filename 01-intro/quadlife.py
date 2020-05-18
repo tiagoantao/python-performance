@@ -1,7 +1,6 @@
 from tkinter import ALL, Canvas, Tk
 
 import numpy as np
-from PIL import Image, ImageTk
 
 
 def create_random_world(y, x):

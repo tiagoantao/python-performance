@@ -1,7 +1,10 @@
 from tkinter import ALL, Canvas, Tk
 
 import numpy as np
-from PIL import Image, ImageTk
+
+cimport cython
+from cpython cimport array
+cimport numpy as np
 
 
 def create_random_world(y, x):
@@ -9,7 +12,8 @@ def create_random_world(y, x):
     return world
 
 
-def get_extended_world(world):
+@cython.boundscheck(False)
+def get_extended_world(np.ndarray world):
     y, x = world.shape
     extended_world = np.empty((y + 2, x + 2), np.uint8)   # empty
     extended_world[1:-1, 1:-1] = world  # XXX broadcast
@@ -26,13 +30,16 @@ def get_extended_world(world):
     return extended_world
 
 
-def live(old_world):
-    extended_world = get_extended_world(old_world)
-    size_y, size_x = old_world.shape
-    new_world = np.empty((size_y, size_x), np.uint8)
+@cython.boundscheck(False)
+@cython.wraparound(False)
+def live(np.ndarray old_world):
+    cdef np.ndarray extended_world = get_extended_world(old_world)
+    cdef int size_y, size_x = old_world.shape
+    cdef array.array states = array.array('i', [0, 0, 0, 0, 0])  # XXX array usage instead of list  # XXX toplevel
+    cdef np.ndarray new_world = np.empty((size_y, size_x), np.uint8)
     for y in range(size_y):
         for x in range(size_x):
-            states = [0, 0, 0, 0, 0]
+            states = array.array('i', [0, 0, 0, 0, 0])
             for i in range(3):
                 states[extended_world[y, x + i]] += 1
                 states[extended_world[y + 2, x + i]] += 1
