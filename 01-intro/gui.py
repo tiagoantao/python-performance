@@ -42,13 +42,14 @@ def live_on_gui(canvas):
     create_tk_image(canvas, new_world, pil_img)
             
 
-root = Tk()
-root.geometry(f'{WIN_X}x{WIN_Y}')
-canvas = Canvas(root,width=WIN_X,height=WIN_Y)
-canvas.pack()
-root.bind('<Button-1>', lambda _: live_on_gui(canvas))
+if __name__ == '__main__':
+    root = Tk()
+    root.geometry(f'{WIN_X}x{WIN_Y}')
+    canvas = Canvas(root,width=WIN_X,height=WIN_Y)
+    canvas.pack()
+    root.bind('<Button-1>', lambda _: live_on_gui(canvas))
 
-world = quadlife.create_random_world(SIZE_Y, SIZE_X)
-pil_img = create_pil_image(world)
-create_tk_image(canvas, world, pil_img)
-root.mainloop()
+    world = quadlife.create_random_world(SIZE_Y, SIZE_X)
+    pil_img = create_pil_image(world)
+    create_tk_image(canvas, world, pil_img)
+    root.mainloop()
