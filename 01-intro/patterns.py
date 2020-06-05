@@ -10,11 +10,9 @@ def get_pattern_text(pattern_name):
 
 
 def convert_pattern_to_array(pattern_text):
-    #We also make sure there is a border of zeroes on right and bottom
-    # bottom is assured by the text, but we need to add right
     max_width = 0
     my_pattern_list = []
-    for line in pattern_text.split('\n'):
+    for line in pattern_text.split('\n')[:-1]:
         line = line.rstrip()
         if len(line) != 0 and line[0] == '!':
             continue
@@ -24,8 +22,7 @@ def convert_pattern_to_array(pattern_text):
         my_pattern_list.append(my_line)
         max_width = max(max_width, len(my_line))
     for line_number, line_pattern in enumerate(my_pattern_list):
-        line_pattern.extend([0] * (1 + max_width - len(line_pattern)))
-        # The 1 + adds the right
+        line_pattern.extend([0] * (max_width - len(line_pattern)))
     return np.array(my_pattern_list)
 
 
