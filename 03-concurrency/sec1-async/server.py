@@ -1,4 +1,5 @@
 import asyncio
+#import marshal
 import pickle
 from random import randint
 
@@ -18,7 +19,9 @@ async def submit_job(reader, writer):
 
 async def get_results(reader, writer):
     job_id = int.from_bytes(await reader.read(4), 'little')
-    pickle.dump(results.get(job_id, None), writer)
+    data = pickle.dumps(results.get(job_id, None))
+    writer.write(len(data).to_bytes(4, 'little'))
+    writer.write(data)
 
 
 async def accept_requests(reader, writer):
