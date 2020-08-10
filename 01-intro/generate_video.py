@@ -29,7 +29,7 @@ def create_space_war_world():
             my_world[y:y + weekender_height, x: x + weekender_width] = weekender
 
     for row in range(3):
-        y = 5 + row * (5 + pulsar_height)
+        y = 25 + row * (5 + pulsar_height)
         for col in range(22):
             x = 5 + col * (5 + pulsar_width)
             my_world[y:y + pulsar_height, x: x + pulsar_width] = np.where(pulsar==1, 2+row, pulsar)
