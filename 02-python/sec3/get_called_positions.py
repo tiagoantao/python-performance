@@ -2,18 +2,17 @@ import bisect
 from random import shuffle
 import sys
 from timeit import timeit
-from typing import List, Set
 
 import zarr
 
 sys.path.insert(0, '../shared')
 
 
-def in_unordered(my_list: List, item: object) -> bool:
+def in_unordered(my_list, item):
     item in my_list
 
 
-def in_ordered(my_list: List, item: object) -> bool:
+def in_ordered(my_list, item):
     pos = bisect.bisect_left(my_list, item)
     return pos != len(my_list) and my_list[pos] == item
 
