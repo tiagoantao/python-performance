@@ -1,8 +1,8 @@
-#cython: language_level=3
+# cython: linetrace=True, language_level=3
 import numpy as np
 
-#cimport cython
-cimport numpy as np
+# cimport cython
+cimport numpy as cnp
 
 
 def darken_naive(image, darken_filter):
@@ -17,20 +17,21 @@ def darken_naive(image, darken_filter):
     return dark_image
 
 
-#def fails():
-#    return a + 1
+# def fails():
+#     return a + 1
 
 
 def darken_annotated(
-        np.ndarray[np.uint8_t, ndim=3] image,
-        np.ndarray[np.uint8_t, ndim=2] darken_filter):
+        cnp.ndarray[cnp.uint8_t, ndim=3] image,
+        cnp.ndarray[cnp.uint8_t, ndim=2] darken_filter):
     cdef int nrows = image.shape[0]  # Explain
     cdef int ncols = image.shape[1]
-    cdef np.uint8_t dark_pixel, mean  # define here
-    cdef np.ndarray[np.uint8_t] pixel
+    cdef cnp.uint8_t dark_pixel
+    cdef cnp.uint8_t mean  # define here
+    cdef cnp.ndarray[cnp.uint8_t] pixel
 
 
-    cdef np.ndarray[np.uint8_t, ndim=2] dark_image = np.empty(shape=(nrows, ncols), dtype=np.uint8)
+    cdef cnp.ndarray[cnp.uint8_t, ndim=2] dark_image = np.empty(shape=(nrows, ncols), dtype=np.uint8)
     for row in range(nrows):
         for col in range(ncols):
             pixel = image[row, col]
@@ -40,8 +41,6 @@ def darken_annotated(
     return dark_image
 # TYPE everything
 # You can do types more general
-
-# Introduce generated code in the book
 
 
 def darken_ufun():
