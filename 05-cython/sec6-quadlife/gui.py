@@ -2,9 +2,15 @@
 # evolve
 from tkinter import Canvas, Tk  # Using Python's built-in GUI based on tkinter
 
+import numpy as np
 from PIL import Image, ImageTk
 
-import quadlife
+import pyximport
+pyximport.install(
+    language_level=3,
+    setup_args={
+        'include_dirs': np.get_include()})
+import cquadlife as quadlife
 
 SIZE_Y = 100  # Size of our world
 SIZE_X = 200
