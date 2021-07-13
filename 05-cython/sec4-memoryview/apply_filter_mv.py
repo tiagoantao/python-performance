@@ -16,7 +16,7 @@ image = Image.open("../../04-numpy/aurora.jpg")
 gray_filter = Image.open("../filter.png").convert("L")
 image_arr, gray_arr = np.array(image), np.array(gray_filter)
 
-profile = line_profiler.LineProfiler(cyfilter.darken_annotated)
+profile = line_profiler.LineProfiler(cyfilter.darken_annotated_mv)
 darken_arr = profile.runcall(cyfilter.darken_annotated, image_arr, gray_arr)
 profile.print_stats()
 

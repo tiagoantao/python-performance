@@ -6,10 +6,11 @@ cimport cython
 cimport numpy as cnp
 
 
-cpdef darken_annotated_mv(
+@cython.boundscheck(False)
+cdef void darken_annotated_mv(
         cnp.uint8_t[:,:,:] image_mv,
         cnp.uint8_t[:,:] darken_filter_mv,
-        cnp.uint8_t[:,:] dark_image_mv):
+        cnp.uint8_t[:,:] dark_image_mv) nogil:
     cdef int nrows = image_mv.shape[0]
     cdef int ncols = image_mv.shape[1]
     cdef cnp.uint8_t dark_pixel
