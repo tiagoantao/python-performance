@@ -79,3 +79,13 @@ def compute_point_255(c):
 
 
 compute_point_ufunc = vectorize(["uint8(complex128)"], target="parallel")(compute_point_255)
+
+def prepare_pos_array(start, end, pos_array):
+    size = pos.array.shape[0[
+    startx, starty = start
+    endx, endy = end
+    for xp in range(size):
+        x = (endx - startx)*(xp/size) + startx
+        for yp in range(size):
+            y = (endy - starty)*(yp/size) + starty  # precision issues
+            img_array[yp, xp] = complex(x, y)
