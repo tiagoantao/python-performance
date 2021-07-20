@@ -105,7 +105,7 @@ venv.bak/
 
 scratch
 .emacs.desktop
-*zarr
+*.zarr
 *.c
 
 04-numpy/sec1-basics/flipped_copy.png

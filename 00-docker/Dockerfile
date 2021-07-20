@@ -12,13 +12,15 @@ RUN wget -O miniconda.sh http://repo.continuum.io/miniconda/Miniconda3-py38_4.9.
 RUN bash miniconda.sh -b
 ENV PATH="/root/miniconda3/bin:${PATH}"
 RUN conda install \
-    ipython==7.19.0 \
-    line_profiler==2.1.2 \
-    # psutil \
-    # pympler \
-    snakeviz==2.0.1 \
-    zarr==2.6.1
+    python=3.9.5 \
+    dask=2021.4.0 \
+        ipython=7.22
+RUN pip install python-graphviz
 RUN conda install -c bioconda plink
 
+
+# 
+# apt install nvidia-utils-460-server
+# conda install -c rapidsai -c nvidia -c numba -c conda-forge cudf cupy cudatoolkit=11.2
 # docker build -t hpc .
 # docker run -v /path_to_repo:/hpc -ti hpc /bin/bash
