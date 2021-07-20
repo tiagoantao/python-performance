@@ -67,6 +67,7 @@ def pdo_all(size, start, end, img_array, compute_fun):
 
 pos_array = np.empty((size, size), dtype=np.complex128)
 
+
 def compute_point_255(c):
     i = -1
     z = complex(0, 0)
@@ -80,6 +81,7 @@ def compute_point_255(c):
 
 compute_point_ufunc = vectorize(["uint8(complex128)"], target="parallel")(compute_point_255)
 
+
 def prepare_pos_array(start, end, pos_array):
     size = pos_array.shape[0]
     startx, starty = start
@@ -87,5 +89,5 @@ def prepare_pos_array(start, end, pos_array):
     for xp in range(size):
         x = (endx - startx)*(xp/size) + startx
         for yp in range(size):
-            y = (endy - starty)*(yp/size) + starty  # precision issues
+            y = (endy - starty)*(yp/size) + starty
             pos_array[yp, xp] = complex(x, y)
