@@ -37,7 +37,7 @@ def compute_all_points(startx, starty, endx, endy, size, img_array):
         return
     mandel_x = (end[0] - startx)*(x/size) + startx
     mandel_y = (end[1] - starty)*(y/size) + starty
-    img_array[x, y] = compute_point(complex(mandel_x, mandel_y))
+    img_array[y, x] = compute_point(complex(mandel_x, mandel_y))
 
 
 img_array = np.empty((size, size), dtype=np.uint8)
