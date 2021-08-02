@@ -35,3 +35,4 @@ def prepare_pos_array(start, end, pos_array):
 pos_array = np.empty((size, size), dtype=np.complex128)
 
 img_array = np.empty((size, size), dtype=np.uint8)
+compute_point_vectorized(pos_array)
