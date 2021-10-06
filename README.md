@@ -1,15 +1,15 @@
-# High Performance Python for Data Analytics
+# Fast Python for Data Science
 
-Welcome to the code repository for the book [_High Performance Python
+Welcome to the code repository for the book [_Fast Python
 for Data
-Analytics_](https://www.manning.com/books/high-performance-python-for-data-analytics)
+Science_](https://www.manning.com/books/fast-python-for-data-science)
 
 
 ![Book cover](cover.jpg)
 
 
 
-High Performance Python for Data Analytics is your guide to optimizing
+Fast Python for Data Science is your guide to optimizing
 every part of your Python-based data analysis process, from the pure
 Python code you write to managing the resources of modern hardware and
 GPUs. You'll learn to rewrite inefficient data structures, improve
