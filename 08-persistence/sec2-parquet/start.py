@@ -39,6 +39,7 @@ parquet_file = pq.ParquetFile("202001.parquet")
 dir(parquet_file)
 parquet_file.schema_arrow
 metadata = parquet_file.metadata
+print(metadata)
 print(metadata.serialized_size)
 type(metadata)
 print(parquet_file.schema)
