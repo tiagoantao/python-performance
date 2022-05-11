@@ -5,7 +5,7 @@ cimport cython
 cimport numpy as cnp
 
 
-@cython.profile(True)
+#@cython.profile(True)
 def darken_annotated(
         cnp.ndarray[cnp.uint8_t, ndim=3] image,
         cnp.ndarray[cnp.uint8_t, ndim=2] darken_filter):

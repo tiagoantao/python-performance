@@ -108,6 +108,11 @@ scratch
 *.zarr
 *.c
 
+dask-worker-space
+*.parquet
+*.lprof
+02-python/*/*.csv
+
 04-numpy/sec1-basics/flipped_copy.png
 04-numpy/sec1-basics/flipped_view.png
 04-numpy/sec1-basics/image.png

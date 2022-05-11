@@ -98,7 +98,7 @@ def time_scenario(size, persist_range, persist_pos, chunk_div=10):
 
     pos_array = pos_array.persist() if persist_pos else pos_array
     image_arr = u_compute_point(pos_array)
-    image_arr.visualize("xx.png", rankdir="TB")
+    # image_arr.visualize("xx.png", rankdir="TB")
     image_arr.compute()
     return time() - start_time
 
@@ -137,4 +137,4 @@ for chunk_div in [1, 2, 4, 10, 100]:
 size = 10000
 print(size, False, False, time_scenario(size, False, False))
 client.restart()
-print(size, True, True, time_scenario(size, True, True, 2))
+print(size, True, True, time_scenario(size, True, True))
