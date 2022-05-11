@@ -15,12 +15,4 @@ RUN conda install \
     python=3.10 \
     ipython=8.3
     
-RUN conda install pandas=1.4 requests snakeviz line_profiler
-# RUN pip install python-graphviz
-
-
-# 
-# apt install nvidia-utils-460-server
-# conda install -c rapidsai -c nvidia -c numba -c conda-forge cudf cupy cudatoolkit=11.2
-# docker build -t hpc .
-# docker run -v /path_to_repo:/hpc -ti hpc /bin/bash
+RUN conda install pandas=1.4 requests snakeviz line_profiler blosc
