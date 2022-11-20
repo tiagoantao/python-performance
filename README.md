@@ -1,15 +1,13 @@
 # Fast Python for Data Science
 
-Welcome to the code repository for the book [_Fast Python
-for Data
-Science_](https://www.manning.com/books/fast-python-for-data-science)
+Welcome to the code repository for the book [_Fast Python_](https://www.manning.com/books/fast-python)
 
 
-![Book cover](cover.jpg)
+![Book cover](cover.png)
 
 
 
-Fast Python for Data Science is your guide to optimizing
+Fast Python is your guide to optimizing
 every part of your Python-based data analysis process, from the pure
 Python code you write to managing the resources of modern hardware and
 GPUs. You'll learn to rewrite inefficient data structures, improve
