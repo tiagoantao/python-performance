@@ -2,10 +2,7 @@
 
 Welcome to the code repository for the book [_Fast Python_](https://www.manning.com/books/fast-python)
 
-
 ![Book cover](cover.png)
-
-
 
 Fast Python is your guide to optimizing
 every part of your Python-based data analysis process, from the pure
@@ -14,18 +11,16 @@ GPUs. You'll learn to rewrite inefficient data structures, improve
 underperforming code with multithreading, and simplify your datasets
 without sacrificing accuracy.
 
-
 Here you can find the code for the book. Here is a chapter-oriented
 roadmap. **Given that the book is in early access, the repo is also
 under construction**
-
 
 # Introduction
 
 ## Extracting maximum performance from built-in features
 
-- [Introducing the project dataset](02-python/sec1-dataset)
-- [Profiling code to detect performance bottlenecks](02-python/sec2-profiling)
+- [Profiling applications with both IO and computing workloads](02-python/sec1-io-cpu)
+- [Profiling code to detect performance bottlenecks](02-python/sec2-cpu)
 - [Optimizing basic data structures for speed: lists, sets, dictionaries](02-python/sec3-basic-ds)
 - [Finding excessive memory allocation](02-python/sec4-memory)
 - [Using laziness and generators for big-data pipelining](02-python/sec5-lazy)
@@ -72,8 +67,6 @@ under construction**
 - [Reading data into Pandas with Arrow](07-pandas/sec4-arrow-intro)
 - [Using Arrow interop to delegate work to moere efficient languages and systems](07-pandas/sec5-arrow-plasma)
 
-
-
 ## Storing big data
 
 - [A unified interface for file access: fsspec](08-persistence/sec1-fsspec)
@@ -81,15 +74,12 @@ under construction**
 - [Dealing with larger than memory datasets the old-fashioned way](08-persistence/sec3-chunk)
 - [Zarr for large array persistence](08-persistence/sec4-zarr)
 
-
 # Advanced topics
-
 
 ## Data analysis using GPU computing
 
-- [Using Numba to generate CPU code](09-gpu/sec2-numba)  XXX sec3-real
+- [Using Numba to generate CPU code](09-gpu/sec2-numba) XXX sec3-real
 - [Performance analysis of GPU code: the case of a CuPy application](09-gpu/sec4-cupy)
-
 
 ## Analyzing big data with Dask
 
@@ -97,11 +87,8 @@ under construction**
 - [The computational cost of Dask operations](10-dask/sec2-perf)
 - [Using Dask's distributed scheduler](10-dask/sec3-sche)
 
-
 # Appendixes
 
 ## Setting up the environment
 
 ## [Using Numba to generate efficient low level code](A02-numba)
-
-
