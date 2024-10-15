@@ -4,7 +4,7 @@ from sys import getsizeof
 from types import GeneratorType
 
 
-def compute_allocation(obj) -> int:
+def compute_allocation(obj) -> tuple[int, int]:
     my_ids = set([id(obj)])
     to_compute = [obj]
     allocation_size = 0
@@ -23,10 +23,10 @@ def compute_allocation(obj) -> int:
             for ikey, ivalue in obj_to_check.items():
                 if id(ikey) not in my_ids:
                     my_ids.add(id(ikey))
-                    to_compute.append(id(ikey))
+                    to_compute.append(ikey)
                 if id(ivalue) not in my_ids:
-                    my_ids.add(ivalue)
-                    to_compute.append(id(ivalue))
+                    my_ids.add(id(ivalue))
+                    to_compute.append(ivalue)
         elif isinstance(obj_to_check, Iterable):
             container_allocation += getsizeof(obj_to_check)
             for inner in obj_to_check:
