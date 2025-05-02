@@ -23,7 +23,7 @@ df_pickup_sort = df_pickup.sort_index()
 %timeit df_sort[
     (df_sort["tpep_pickup_datetime"] >= "2020-01-06") &
     (df_sort["tpep_pickup_datetime"] <= "2020-01-08")]  # 52.7 ms
-%timeit df_pickup_sort["2020-01-06":"2020-01-08")]  # 1ms
+%timeit df_pickup_sort["2020-01-06":"2020-01-08"]  # 1ms
 
 
 %timeit df[
