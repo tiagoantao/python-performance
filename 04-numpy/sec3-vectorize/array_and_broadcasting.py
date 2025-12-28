@@ -14,7 +14,7 @@ array_100000 = np.arange(100000)
 array_100000 += array_100000
 
 x = np.array([[0, 20], [250, 500], [1, 2]],
-             dtype=np.uint8)
+             dtype=np.uint16)
 y = np.array([[1, 10], [25, 5]], dtype=np.uint8)
 
 print(sum_arrays(x, y))
